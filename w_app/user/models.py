@@ -4,14 +4,7 @@ import datetime as dt
 
 from flask_login import UserMixin
 
-from w_app.database import (
-    Column,
-    Model,
-    SurrogatePK,
-    db,
-    reference_col,
-    relationship,
-)
+from w_app.database import Column, Model, SurrogatePK, db, reference_col, relationship
 from w_app.extensions import bcrypt
 
 
