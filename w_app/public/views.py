@@ -10,7 +10,6 @@ from flask import (
     url_for,
 )
 from flask_login import login_required, login_user, logout_user
-
 from w_app.extensions import login_manager
 from w_app.public.forms import LoginForm
 from w_app.user.forms import RegisterForm

@@ -1,6 +1,8 @@
 # Everything the developer needs in addition to the production requirements
 -r prod.txt
 
+pre-commit==1.18.3
+
 # Testing
 pytest==3.7.4
 WebTest==2.0.30

@@ -2,10 +2,9 @@
 """Defines fixtures available to all tests."""
 
 import pytest
-from webtest import TestApp
-
 from w_app.app import create_app
 from w_app.database import db as _db
+from webtest import TestApp
 
 from .factories import UserFactory
 

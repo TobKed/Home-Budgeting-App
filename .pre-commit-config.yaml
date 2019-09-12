@@ -1,0 +1,38 @@
+repos:
+  - repo: https://github.com/pre-commit/mirrors-isort
+    rev: "v4.3.21"
+    hooks:
+      - id: isort
+        additional_dependencies: [toml]
+  - repo: https://github.com/ambv/black
+    rev: stable
+    hooks:
+      - id: black
+        language_version: python3.7
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: "v1.1.7"
+    hooks:
+      - id: forbid-tabs
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: "v2.3.0"
+    hooks:
+      - id: flake8
+      - id: check-yaml
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+#      - id: requirements-txt-fixer
+      - id: trailing-whitespace
+  - repo: meta
+    hooks:
+      - id: check-useless-excludes
+  - repo: local
+    hooks:
+      - id: unit-tests
+        name: Runs all unit tests
+        entry: ./shell_scripts/run_unit_tests.sh
+        language: script
+        pass_filenames: false
+        always_run: true

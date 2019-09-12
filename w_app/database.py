@@ -80,5 +80,5 @@ def reference_col(
     return Column(
         db.ForeignKey("{0}.{1}".format(tablename, pk_name), **foreign_key_kwargs),
         nullable=nullable,
-        **column_kwargs
+        **column_kwargs,
     )
