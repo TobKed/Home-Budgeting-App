@@ -1,21 +1,3 @@
-# Configuration for isort.
-[tool.isort]
-multi_line_output = 3
-force_grid_wrap = 0
-include_trailing_comma = true
-use_parentheses = true
-line_length = 88
-#known_first_party = []
-default_section = "THIRDPARTY"
-
-
-[isort]
-line_length=88
-multi_line_output=3
-skip=["migrations/*", "venv/*"]
-include_trailing_comma=true
-
-
 [tool.black]
 line-length = 88
 target-version = ['py37']
