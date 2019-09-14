@@ -1,0 +1,28 @@
+{
+   "name": "W-App",
+   "description": "W-App description",
+   "repository": "https://github.com/TobKed/W-App",
+   "keywords": ["python"],
+   "env": {
+      "SECRET_KEY": {
+         "description": "SECRET_KEY.",
+         "generator": "secret"
+      },
+      "DATABASE_URL": {
+         "description": "DATABASE_URL.",
+         "value": "sqlite:////tmp/dev.db"
+      },
+      "FLASK_APP": {
+         "description": "FLASK_APP.",
+         "value": "autoapp.py"
+      }
+   },
+   "buildpacks": [
+      {
+         "url": "heroku/nodejs"
+      },
+      {
+         "url": "heroku/python"
+      }
+   ]
+}
