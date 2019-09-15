@@ -4,6 +4,7 @@ import logging
 import sys
 
 from flask import Flask, render_template
+
 from w_app import commands, public, user
 from w_app.extensions import (
     bcrypt,
