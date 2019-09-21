@@ -1,17 +1,43 @@
 # Config file for automatic testing at travis-ci.org
 dist: xenial
 language: python
-python:
-  - 3.6
-  - 3.7
-install:
+
+python: 3.7
+
+stages:
+  - test
+  - deploy-to-production
+  - test-production
+
+jobs:
+  include:
+    - name: "Lint"
+      script:
+        - npm run lint
+        - flask lint --check
+    - name: "Run unit tests"
+      stage: test
+      script: flask test
+    - name: "Deploy to Heroku"
+      if: branch = prod
+      stage: deploy-to-production
+      before_script: skip
+      script: skip
+      deploy:
+        provider: heroku
+        app: $HEROKU_APP_NAME
+        api_key: $HEROKU_AUTH_TOKEN
+        on: prod
+    - name: "Test production"
+      if: branch = prod
+      stage: test-production
+      before_script: skip
+      script: 'curl https://${HEROKU_APP_NAME}.herokuapp.com/'
+
+before_script:
   - pip install -r requirements/dev.txt
   - nvm install 12
   - nvm use 12
   - npm install
-before_script:
-  - cp .env.example .env
-  - npm run lint
   - npm run build
-  - flask lint --check
-script: flask test
+  - cp .env.example .env
