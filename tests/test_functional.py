@@ -4,6 +4,7 @@
 See: http://webtest.readthedocs.org/
 """
 from flask import url_for
+
 from w_app.user.models import User
 
 from .factories import UserFactory
