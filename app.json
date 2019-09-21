@@ -1,11 +1,6 @@
 {
    "name": "W-App",
-   "description": "W-App description",
-   "repository": "https://github.com/TobKed/W-App",
-   "success_url": "/",
-   "keywords": [
-      "python"
-   ],
+   "description": "W-App to store and track your workouts.",
    "env": {
       "SECRET_KEY": {
          "description": "SECRET_KEY.",
