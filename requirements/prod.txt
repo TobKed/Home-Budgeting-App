@@ -40,3 +40,4 @@ environs==5.2.1
 
 # Monitoring
 newrelic==5.0.2.126
+sentry-sdk[flask]==0.12.2

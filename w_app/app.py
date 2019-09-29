@@ -3,9 +3,11 @@
 import logging
 import sys
 
+import sentry_sdk
 from flask import Flask, render_template
+from sentry_sdk.integrations.flask import FlaskIntegration
 
-from w_app import commands, public, user
+from w_app import commands, public, settings, user
 from w_app.extensions import (
     bcrypt,
     cache,
@@ -31,6 +33,7 @@ def create_app(config_object="w_app.settings"):
     register_shellcontext(app)
     register_commands(app)
     configure_logger(app)
+    initialize_sentry_integration()
     return app
 
 
@@ -89,3 +92,9 @@ def configure_logger(app):
     handler = logging.StreamHandler(sys.stdout)
     if not app.logger.handlers:
         app.logger.addHandler(handler)
+
+
+def initialize_sentry_integration():
+    """Initialize Sentry integration."""
+    if settings.SENTRY_DSN and settings.ENV == "production":
+        sentry_sdk.init(dsn=settings.SENTRY_DSN, integrations=[FlaskIntegration()])

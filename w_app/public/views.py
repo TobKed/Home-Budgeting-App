@@ -75,3 +75,9 @@ def about():
     """About page."""
     form = LoginForm(request.form)
     return render_template("public/about.html", form=form)
+
+
+@blueprint.route("/debug-sentry")
+def trigger_error():
+    """Debug view for Sentry."""
+    division_by_zero = 1 / 0  # noqa
