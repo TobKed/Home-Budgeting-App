@@ -2,6 +2,10 @@
 W-App
 ===============================
 
+.. image:: https://travis-ci.org/TobKed/W-App.svg?branch=master
+    :target: https://travis-ci.org/TobKed/W-App
+    :alt: Build Status
+
 W-App
 
 
