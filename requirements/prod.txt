@@ -37,3 +37,6 @@ Flask-DebugToolbar==0.10.1
 
 # Environment variable parsing
 environs==5.2.1
+
+# Monitoring
+newrelic==5.0.2.126
