@@ -22,3 +22,7 @@ CACHE_TYPE = "simple"  # Can be "memcached", "redis", etc.
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 WEBPACK_MANIFEST_PATH = "webpack/manifest.json"
 SENTRY_DSN = env.str("SENTRY_DSN", default=None)
+
+GOOGLE_CLIENT_ID = env.str("GOOGLE_CLIENT_ID", default=None)
+GOOGLE_CLIENT_SECRET = env.str("GOOGLE_CLIENT_SECRET", default=None)
+GOOGLE_DISCOVERY_URL = "https://accounts.google.com/.well-known/openid-configuration"
