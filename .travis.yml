@@ -15,11 +15,12 @@ jobs:
       script:
         - npm run lint
         - flask lint --check
+        - pre-commit run --all-files
     - name: "Run unit tests"
       stage: test
       script: flask test
     - name: "Deploy to Heroku"
-      if: branch = prod
+      if: branch = master
       stage: deploy-to-production
       before_script: skip
       script: skip
@@ -27,9 +28,9 @@ jobs:
         provider: heroku
         app: $HEROKU_APP_NAME
         api_key: $HEROKU_AUTH_TOKEN
-        on: prod
+        on: master
     - name: "Test production"
-      if: branch = prod
+      if: branch = master
       stage: test-production
       before_script: skip
       script: 'curl https://${HEROKU_APP_NAME}.herokuapp.com/'

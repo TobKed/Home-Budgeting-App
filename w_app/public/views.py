@@ -88,11 +88,13 @@ def trigger_error():
 
 
 def get_google_provider_cfg():
+    """Returns Google Provide configuration."""
     return requests.get(current_app.config["GOOGLE_DISCOVERY_URL"]).json()
 
 
 @blueprint.route("/login")
 def login():
+    """Google Login view."""
     client = WebApplicationClient(current_app.config["GOOGLE_CLIENT_ID"])
     # Find out what URL to hit for Google login
     google_provider_cfg = get_google_provider_cfg()
@@ -110,6 +112,7 @@ def login():
 
 @blueprint.route("/login/callback")
 def callback():
+    """Google Login redirect endpoint."""
     client = WebApplicationClient(current_app.config["GOOGLE_CLIENT_ID"])
     # Get authorization code Google sent back to you
     code = request.args.get("code")
