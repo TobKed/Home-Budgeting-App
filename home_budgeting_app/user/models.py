@@ -4,8 +4,15 @@ import datetime as dt
 
 from flask_login import UserMixin
 
-from w_app.database import Column, Model, SurrogatePK, db, reference_col, relationship
-from w_app.extensions import bcrypt
+from home_budgeting_app.database import (
+    Column,
+    Model,
+    SurrogatePK,
+    db,
+    reference_col,
+    relationship,
+)
+from home_budgeting_app.extensions import bcrypt
 
 
 class Role(SurrogatePK, Model):

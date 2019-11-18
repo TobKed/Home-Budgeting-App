@@ -6,8 +6,8 @@ import logging
 import pytest
 from webtest import TestApp
 
-from w_app.app import create_app
-from w_app.database import db as _db
+from home_budgeting_app.app import create_app
+from home_budgeting_app.database import db as _db
 
 from .factories import UserFactory
 

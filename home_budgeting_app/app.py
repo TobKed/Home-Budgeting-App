@@ -7,8 +7,8 @@ import sentry_sdk
 from flask import Flask, render_template
 from sentry_sdk.integrations.flask import FlaskIntegration
 
-from w_app import commands, public, settings, user
-from w_app.extensions import (
+from home_budgeting_app import commands, public, settings, user
+from home_budgeting_app.extensions import (
     bcrypt,
     cache,
     csrf_protect,
@@ -20,7 +20,7 @@ from w_app.extensions import (
 )
 
 
-def create_app(config_object="w_app.settings"):
+def create_app(config_object="home_budgeting_app.settings"):
     """Create application factory, as explained here: http://flask.pocoo.org/docs/patterns/appfactories/.
 
     :param config_object: The configuration object to use.
