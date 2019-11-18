@@ -2,9 +2,12 @@
 ARG INSTALL_PYTHON_VERSION=${INSTALL_PYTHON_VERSION:-3.7}
 FROM python:${INSTALL_PYTHON_VERSION}-slim-buster AS base
 
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
 RUN apt-get update
 RUN apt-get install -y \
-    curl
+    curl netcat
 
 ARG INSTALL_NODE_VERSION=${INSTALL_NODE_VERSION:-12}
 RUN curl -sL https://deb.nodesource.com/setup_${INSTALL_NODE_VERSION}.x | bash -
@@ -21,9 +24,12 @@ RUN npm install
 # ================================= DEVELOPMENT ================================
 FROM base AS development
 RUN pip install -r requirements/dev.txt
+COPY ./compose/production/entrypoint /entrypoint
+RUN sed -i 's/\r$//g' /entrypoint
+RUN chmod +x /entrypoint
 EXPOSE 2992
 EXPOSE 5000
-CMD [ "npm", "start" ]
+ENTRYPOINT ["/entrypoint"]
 
 # ================================= PRODUCTION =================================
 FROM base AS production

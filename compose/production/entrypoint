@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+set -o nounset
+
+until nc -z postgres 5432; do
+    echo "Waiting for PostgreSQL..."
+    sleep 1.0
+done
+echo "PostgreSQL Started"
+
+exec "$@"

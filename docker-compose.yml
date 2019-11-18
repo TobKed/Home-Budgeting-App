@@ -8,7 +8,6 @@ x-default-volumes: &default_volumes
   volumes:
     - ./:/app
     - node-modules:/app/node_modules
-    - ./dev.db:/tmp/dev.db
 
 services:
   flask-dev:
@@ -18,9 +17,12 @@ services:
       args:
         <<: *build_args
     image: "w_app-development"
+    depends_on:
+      - postgres
     ports:
       - "5000:5000"
       - "2992:2992"
+    command: "npm start"
     <<: *default_volumes
 
   flask-prod:
@@ -51,7 +53,17 @@ services:
     tty: true
     <<: *default_volumes
 
+  postgres:
+    image: postgres:11.5
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
 volumes:
   node-modules:
   static-build:
-  dev-db:
+  local_postgres_data: {}
