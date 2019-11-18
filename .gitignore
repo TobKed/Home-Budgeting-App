@@ -49,8 +49,8 @@ env/
 /node_modules/
 
 # webpack-built files
-/w_app/static/build/
-/w_app/webpack/manifest.json
+/home_budgeting_app/static/build/
+/home_budgeting_app/webpack/manifest.json
 
 # Configuration
 .env

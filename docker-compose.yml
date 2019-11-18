@@ -16,7 +16,7 @@ services:
       target: development
       args:
         <<: *build_args
-    image: "w_app-development"
+    image: "home_budgeting_app-development"
     depends_on:
       - postgres
     ports:
@@ -31,7 +31,7 @@ services:
       target: production
       args:
         <<: *build_args
-    image: "w_app-production"
+    image: "home_budgeting_app-production"
     ports:
       - "5000:5000"
     environment:
@@ -48,13 +48,13 @@ services:
     environment:
       FLASK_ENV: production
       FLASK_DEBUG: 0
-    image: "w_app-manage"
+    image: "home_budgeting_app-manage"
     stdin_open: true
     tty: true
     <<: *default_volumes
 
   postgres:
-    image: postgres:11.5
+    image: postgres:11
     restart: always
     env_file:
       - .env

@@ -1,7 +1,7 @@
 {
-  "name": "w_app",
+  "name": "home_budgeting_app",
   "version": "1.0.0",
-  "description": "W-App",
+  "description": "Home-Budgeting-App",
   "scripts": {
     "build": "NODE_ENV=production webpack --progress --colors -p",
     "start": "concurrently -n \"WEBPACK,FLASK\" -c \"bgBlue.bold,bgMagenta.bold\" \"npm run webpack-dev-server\" \"npm run flask-server\"",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TobKed/w_app.git"
+    "url": "git+https://github.com/TobKed/home_budgeting_app.git"
   },
   "author": "Tobiasz Kedzierski",
   "license": "MIT",
@@ -20,9 +20,9 @@
     "node": ">=12"
   },
   "bugs": {
-    "url": "https://github.com/TobKed/w_app/issues"
+    "url": "https://github.com/TobKed/home_budgeting_app/issues"
   },
-  "homepage": "https://github.com/TobKed/w_app#readme",
+  "homepage": "https://github.com/TobKed/home_budgeting_app#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.9.0",
     "bootstrap": "^4.3.1",

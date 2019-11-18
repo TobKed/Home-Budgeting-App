@@ -27,7 +27,7 @@ module.exports = {
     ],
   },
   output: {
-    path: path.join(__dirname, 'w_app', 'static', 'build'),
+    path: path.join(__dirname, 'home_budgeting_app', 'static', 'build'),
     publicPath: `${publicHost}/static/build/`,
     filename: '[name].[hash].js',
     chunkFilename: '[id].[hash].js',
@@ -77,7 +77,7 @@ module.exports = {
   plugins: [
     new MiniCssExtractPlugin({ filename: '[name].[hash].css', }),
     new webpack.ProvidePlugin({ $: 'jquery', jQuery: 'jquery' }),
-    new ManifestRevisionPlugin(path.join(__dirname, 'w_app', 'webpack', 'manifest.json'), {
+    new ManifestRevisionPlugin(path.join(__dirname, 'home_budgeting_app', 'webpack', 'manifest.json'), {
       rootAssetPath,
       ignorePaths: ['/js', '/css'],
       extensionsRegex: /\.(ttf|eot|svg|png|jpe?g|gif|ico)$/i,

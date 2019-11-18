@@ -1,6 +1,6 @@
 {
-   "name": "W-App",
-   "description": "W-App to store and track your workouts.",
+   "name": "Home-Budgeting-App",
+   "description": "Home-Budgeting-App to store and track your expenses.",
    "env": {
       "SECRET_KEY": {
          "description": "SECRET_KEY.",
@@ -9,6 +9,12 @@
       "FLASK_APP": {
          "description": "FLASK_APP.",
          "value": "autoapp.py"
+      },
+      "GOOGLE_CLIENT_ID": {
+         "description": "GOOGLE_CLIENT_ID",
+      },
+      "GOOGLE_CLIENT_SECRET": {
+         "description": "GOOGLE_CLIENT_SECRET",
       }
    },
    "buildpacks": [

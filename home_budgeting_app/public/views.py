@@ -15,11 +15,11 @@ from flask import (
 from flask_login import login_required, login_user, logout_user
 from oauthlib.oauth2 import WebApplicationClient
 
-from w_app.extensions import login_manager
-from w_app.public.forms import LoginForm
-from w_app.user.forms import RegisterForm
-from w_app.user.models import User
-from w_app.utils import flash_errors
+from home_budgeting_app.extensions import login_manager
+from home_budgeting_app.public.forms import LoginForm
+from home_budgeting_app.user.forms import RegisterForm
+from home_budgeting_app.user.models import User
+from home_budgeting_app.utils import flash_errors
 
 blueprint = Blueprint("public", __name__, static_folder="../static")
 
