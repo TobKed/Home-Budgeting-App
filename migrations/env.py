@@ -1,18 +1,17 @@
+"""isort:skip_file"""
 from __future__ import with_statement
 
-# fmt: off
 import logging
 from logging.config import fileConfig
 
 from alembic import context
+
 # add your model's MetaData object here
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 from flask import current_app
 from sqlalchemy import engine_from_config, pool
-
-# fmt: on
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -24,7 +23,8 @@ fileConfig(config.config_file_name)
 logger = logging.getLogger("alembic.env")
 
 config.set_main_option(
-    "sqlalchemy.url", current_app.config.get("SQLALCHEMY_DATABASE_URI")
+    "sqlalchemy.url",
+    current_app.config.get("SQLALCHEMY_DATABASE_URI").replace("%", "%%"),  # type: ignore
 )
 target_metadata = current_app.extensions["migrate"].db.metadata
 
@@ -47,7 +47,7 @@ def run_migrations_offline():
 
     """
     url = config.get_main_option("sqlalchemy.url")
-    context.configure(url=url)
+    context.configure(url=url, target_metadata=target_metadata, literal_binds=True)
 
     with context.begin_transaction():
         context.run_migrations()
@@ -71,25 +71,22 @@ def run_migrations_online():
                 directives[:] = []
                 logger.info("No changes in schema detected.")
 
-    engine = engine_from_config(
+    connectable = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
 
-    connection = engine.connect()
-    context.configure(
-        connection=connection,
-        target_metadata=target_metadata,
-        process_revision_directives=process_revision_directives,
-        **current_app.extensions["migrate"].configure_args,
-    )
+    with connectable.connect() as connection:
+        context.configure(
+            connection=connection,
+            target_metadata=target_metadata,
+            process_revision_directives=process_revision_directives,
+            **current_app.extensions["migrate"].configure_args,
+        )
 
-    try:
         with context.begin_transaction():
             context.run_migrations()
-    finally:
-        connection.close()
 
 
 if context.is_offline_mode():

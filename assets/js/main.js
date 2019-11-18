@@ -1,5 +1,5 @@
 /*
- * Main Javascript file for w_app.
+ * Main Javascript file for home_budgeting_app.
  *
  * This file bundles all of your javascript together using webpack.
  */

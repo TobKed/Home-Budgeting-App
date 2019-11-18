@@ -4,7 +4,7 @@ import datetime as dt
 
 import pytest
 
-from w_app.user.models import Role, User
+from home_budgeting_app.user.models import Role, User
 
 from .factories import UserFactory
 

@@ -19,7 +19,7 @@ WTForms==2.2.1
 
 # Deployment
 gevent==1.4.0
-gunicorn>=19.9.0
+gunicorn==19.9.0
 supervisor==4.0.4
 
 # Webpack

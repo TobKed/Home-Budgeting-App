@@ -1,12 +1,12 @@
 ===============================
-W-App
+Home-Budgeting-App
 ===============================
 
-.. image:: https://travis-ci.org/TobKed/W-App.svg?branch=master
-    :target: https://travis-ci.org/TobKed/W-App
+.. image:: https://travis-ci.org/TobKed/Home-Budgeting-App.svg?branch=master
+    :target: https://travis-ci.org/TobKed/Home-Budgeting-App
     :alt: Build Status
 
-W-App
+Home-Budgeting-App
 
 
 Quickstart
@@ -14,8 +14,8 @@ Quickstart
 
 Run the following commands to bootstrap your environment ::
 
-    git clone https://github.com/TobKed/w_app
-    cd w_app
+    git clone https://github.com/TobKed/home_budgeting_app
+    cd home_budgeting_app
     pip install -r requirements/dev.txt
     cp .env.example .env
     npm install
@@ -197,7 +197,7 @@ Deployment by using `Heroku CLI <https://devcenter.heroku.com/articles/heroku-cl
 
 * Create Heroku App. You can leave your app name, change it, or leave it blank (random name will be generated)::
 
-    heroku create {{cookiecutter.app_name}}
+    heroku create <your-app-name>
 
 * Add buildpacks::
 
