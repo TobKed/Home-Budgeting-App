@@ -46,6 +46,9 @@ class User(UserMixin, SurrogatePK, Model):
     active = Column(db.Boolean(), default=False)
     is_admin = Column(db.Boolean(), default=False)
 
+    categories = relationship("Category", backref="user_categories", lazy=True)
+    expenditures = relationship("Expenditure", backref="user_expenditures", lazy=True)
+
     def __init__(self, username, email, password=None, **kwargs):
         """Create instance."""
         db.Model.__init__(self, username=username, email=email, **kwargs)
