@@ -47,22 +47,22 @@ class TestLoginForm:
         """Login successful."""
         user.set_password("example")
         user.save()
-        form = LoginForm(username=user.username, password="example")
+        form = LoginForm(email=user.email, password="example")
         assert form.validate() is True
         assert form.user == user
 
     def test_validate_unknown_username(self, db):
         """Unknown username."""
-        form = LoginForm(username="unknown", password="example")
+        form = LoginForm(email="unknown", password="example")
         assert form.validate() is False
-        assert "Unknown username" in form.username.errors
+        assert "Unknown user email" in form.email.errors
         assert form.user is None
 
     def test_validate_invalid_password(self, user):
         """Invalid password."""
         user.set_password("example")
         user.save()
-        form = LoginForm(username=user.username, password="wrongpassword")
+        form = LoginForm(email=user.email, password="wrongpassword")
         assert form.validate() is False
         assert "Invalid password" in form.password.errors
 
@@ -72,6 +72,6 @@ class TestLoginForm:
         user.set_password("example")
         user.save()
         # Correct username and password, but user is not activated
-        form = LoginForm(username=user.username, password="example")
+        form = LoginForm(email=user.email, password="example")
         assert form.validate() is False
-        assert "User not activated" in form.username.errors
+        assert "User not activated" in form.email.errors

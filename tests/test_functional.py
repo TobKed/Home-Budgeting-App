@@ -19,7 +19,7 @@ class TestLoggingIn:
         res = testapp.get("/")
         # Fills out login form in navbar
         form = res.forms["loginForm"]
-        form["username"] = user.username
+        form["email"] = user.email
         form["password"] = "myprecious"
         # Submits
         res = form.submit().follow()
@@ -30,7 +30,7 @@ class TestLoggingIn:
         res = testapp.get("/")
         # Fills out login form in navbar
         form = res.forms["loginForm"]
-        form["username"] = user.username
+        form["email"] = user.email
         form["password"] = "myprecious"
         # Submits
         res = form.submit().follow()
@@ -44,25 +44,25 @@ class TestLoggingIn:
         res = testapp.get("/")
         # Fills out login form, password incorrect
         form = res.forms["loginForm"]
-        form["username"] = user.username
+        form["email"] = user.email
         form["password"] = "wrong"
         # Submits
         res = form.submit()
         # sees error
         assert "Invalid password" in res
 
-    def test_sees_error_message_if_username_doesnt_exist(self, user, testapp):
+    def test_sees_error_message_if_user_email_doesnt_exist(self, user, testapp):
         """Show error if username doesn't exist."""
         # Goes to homepage
         res = testapp.get("/")
         # Fills out login form, password incorrect
         form = res.forms["loginForm"]
-        form["username"] = "unknown"
+        form["email"] = "unknown"
         form["password"] = "myprecious"
         # Submits
         res = form.submit()
         # sees error
-        assert "Unknown user" in res
+        assert "Unknown user email" in res
 
 
 class TestRegistering:
