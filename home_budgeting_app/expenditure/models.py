@@ -14,8 +14,11 @@ class Category(SurrogatePK, Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     label = Column(db.String(128))
     parent_id = Column(db.Integer, db.ForeignKey("categories.id"))
-    children = relationship("Category", lazy="joined", join_depth=2)
+    children = relationship("Category", lazy="joined", join_depth=2)  # lazy="dynamic"
     expenditures = db.relationship("Expenditure", backref="expenditures", lazy=True)
+
+    def __repr__(self):
+        return f"Category(label='{self.label}', user_id={self.user_id}, parent_id={self.parent_id})"
 
 
 class Expenditure(SurrogatePK, Model):
@@ -29,3 +32,9 @@ class Expenditure(SurrogatePK, Model):
     comment = Column(db.Text(), nullable=True)
     category = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
+
+    def __repr__(self):
+        return (
+            f"Expenditure(value={self.value}, spent_at={self.spent_at}, comment='{self.comment}', "
+            f"category={self.category}, user_id={self.user_id})"
+        )

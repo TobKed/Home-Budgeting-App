@@ -33,6 +33,13 @@ repos:
       - id: mypy
   - repo: local
     hooks:
+      - id: mypy
+        name: Checks typing annotations consistency with mypy
+        language: python
+        entry: mypy
+        files: \.py$
+        pass_filenames: true
+        require_serial: true
       - id: flask-lint
         name: flask-lint
         entry: flask lint --check
