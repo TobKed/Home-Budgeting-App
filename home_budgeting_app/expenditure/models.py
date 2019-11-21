@@ -2,6 +2,8 @@
 """Expenditure models."""
 import datetime as dt
 
+from sqlalchemy.exc import SQLAlchemyError
+
 from home_budgeting_app.database import Column, Model, SurrogatePK, relationship
 from home_budgeting_app.extensions import db
 
@@ -17,7 +19,18 @@ class Category(SurrogatePK, Model):
     children = relationship("Category", lazy="joined", join_depth=2)  # lazy="dynamic"
     expenditures = db.relationship("Expenditure", backref="expenditures", lazy=True)
 
-    def __repr__(self):
+    def save(self, *args, **kwargs):
+        """Save the record and prevent the same subcategory within category."""
+        if self.query.filter_by(
+            user_id=self.user_id, label=self.label, parent_id=self.parent_id
+        ).first():
+            raise SQLAlchemyError(
+                f"Error when creating {self}. "
+                f"There cannot be two cannot be be two categories with the same name and the same parent."
+            )
+        return super().save(*args, **kwargs)
+
+    def __repr__(self):  # noqa: D105
         return f"Category(label='{self.label}', user_id={self.user_id}, parent_id={self.parent_id})"
 
 
@@ -33,7 +46,7 @@ class Expenditure(SurrogatePK, Model):
     category = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
 
-    def __repr__(self):
+    def __repr__(self):  # noqa: D105
         return (
             f"Expenditure(value={self.value}, spent_at={self.spent_at}, comment='{self.comment}', "
             f"category={self.category}, user_id={self.user_id})"
