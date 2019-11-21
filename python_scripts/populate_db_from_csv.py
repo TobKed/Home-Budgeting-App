@@ -15,7 +15,7 @@ from home_budgeting_app.user.models import User
 
 logging.basicConfig(level=logging.INFO)
 
-
+USER_ID: int = 1
 MAIN_CATEGORIES: List[str] = [
     "Bills",
     "Food",
@@ -51,7 +51,7 @@ def get_filename_from_args() -> str:  # noqa: D103
     return args.filename
 
 
-def create_main_categories(user_id: int) -> None:  # noqa: D103
+def create_main_categories(user_id: int = USER_ID) -> None:  # noqa: D103
     for category_name in MAIN_CATEGORIES:
         category = Category.query.filter_by(
             user_id=user_id, label=category_name
@@ -63,14 +63,14 @@ def create_main_categories(user_id: int) -> None:  # noqa: D103
             logging.info("Category not found, created: %s", category_name)
 
 
-def create_sub_categories(user_id: int) -> None:  # noqa: D103
+def create_sub_categories() -> None:  # noqa: D103
     for category_name, parent_category_name in SUB_CATEGORIES:
         parent_category = Category.query.filter_by(
-            user_id=user_id, label=parent_category_name
+            user_id=USER_ID, label=parent_category_name
         ).first()
 
         category = Category.query.filter_by(
-            user_id=user_id, label=category_name, parent_id=parent_category.id
+            user_id=USER_ID, label=category_name, parent_id=parent_category.id
         ).first()
 
         if not parent_category:
@@ -84,7 +84,7 @@ def create_sub_categories(user_id: int) -> None:  # noqa: D103
             )
         else:
             Category.create(
-                user_id=user_id, label=category_name, parent_id=parent_category.id
+                user_id=USER_ID, label=category_name, parent_id=parent_category.id
             )
             logging.info(
                 "Category not found, created: %s (parent: %s)",
@@ -118,7 +118,7 @@ def read_expenditures_from_csv(
 
 
 def find_category(
-    user_id: int, category_name: str, parent_category_id: Optional[int] = None
+    category_name: str, parent_category_id: Optional[int] = None
 ) -> Category:  # noqa: D103
     """Match category from csv with category from DB."""
     if "-" in category_name:
@@ -129,32 +129,32 @@ def find_category(
         )
 
         main_category = Category.query.filter_by(
-            user_id=user_id, label=main_category_name, parent_id=parent_category_id
+            user_id=USER_ID, label=main_category_name, parent_id=parent_category_id
         ).first()
         if main_category:
-            return find_category(user_id, sub_category_name, main_category.id)
+            return find_category(sub_category_name, main_category.id)
         else:
             raise Exception("Oy oy!")
 
     category_name = category_name.capitalize()
     return Category.query.filter_by(
-        user_id=user_id, label=category_name, parent_id=parent_category_id
+        user_id=USER_ID, label=category_name, parent_id=parent_category_id
     ).first()
 
 
 def _translate_basic_to_db_expenditure(
-    user_id: int, basic_expenditure: expenditure.Expenditure
+    basic_expenditure: expenditure.Expenditure,
 ) -> Expenditure:  # noqa: D103
     category_name = basic_expenditure.category
 
     # to avoid hitting db constantly
     if category_name not in CATEGORIES_CATALOG:
-        category = find_category(user_id, category_name)
+        category = find_category(category_name=category_name)
         CATEGORIES_CATALOG[category_name] = category
     category = CATEGORIES_CATALOG[category_name]
 
     return Expenditure(
-        user_id=user_id,
+        user_id=USER_ID,
         value=basic_expenditure.value,
         comment=basic_expenditure.comment,
         category=category.id,
@@ -163,11 +163,11 @@ def _translate_basic_to_db_expenditure(
 
 
 def translate_basic_to_db_expenditures(
-    user_id: int, basic_expenditures: List[expenditure.Expenditure]
+    basic_expenditures: List[expenditure.Expenditure],
 ) -> List[Expenditure]:  # noqa: D103
     db_expenditures = list()
     for e in basic_expenditures:
-        db_e = _translate_basic_to_db_expenditure(user_id, e)
+        db_e = _translate_basic_to_db_expenditure(e)
         db_expenditures.append(db_e)
 
     return db_expenditures
@@ -176,7 +176,7 @@ def translate_basic_to_db_expenditures(
 @log_execution_time
 def save_db_expenditures_to_db(expenditures: List[Expenditure]) -> None:  # noqa: D103
     e_to_be_saved, e_to_be_skipped = list(), list()
-    for e in db_expenditures:
+    for e in expenditures:
         if Expenditure.query.filter_by(
             user_id=e.user_id,
             spent_at=e.spent_at,
@@ -201,15 +201,15 @@ if __name__ == "__main__":
 
     file = get_filename_from_args()
 
-    user = User.get_by_id(1)
+    user = User.get_by_id(USER_ID)
     logging.info("Fetched user: %s", user)
     nr_of_user_expenditures_start = user.expenditures.count()
 
-    create_main_categories(user.id)
-    create_sub_categories(user.id)
+    create_main_categories()
+    create_sub_categories()
 
     basic_expenditures = read_expenditures_from_csv(file)
-    db_expenditures = translate_basic_to_db_expenditures(user.id, basic_expenditures)
+    db_expenditures = translate_basic_to_db_expenditures(basic_expenditures)
 
     save_db_expenditures_to_db(db_expenditures)
 

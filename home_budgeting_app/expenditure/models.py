@@ -16,7 +16,9 @@ class Category(SurrogatePK, Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     label = Column(db.String(128))
     parent_id = Column(db.Integer, db.ForeignKey("categories.id"))
-    children = relationship("Category", lazy="joined", join_depth=2)  # lazy="dynamic"
+    children = relationship(
+        "Category", lazy="dynamic"
+    )  # lazy="dynamic" / "joined" , join_depth=2
     expenditures = db.relationship("Expenditure", backref="expenditures", lazy=True)
 
     def save(self, *args, **kwargs):

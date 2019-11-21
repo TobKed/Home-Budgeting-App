@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% from "macros.html" import get_categories_list with context %}
+{% block content %}
+    <div class="container">
+        <h1>Your categories:</h1>
+        <p>
+            {{ get_categories_list(categories) }}
+        </p>
+    </div>
+{% endblock %}

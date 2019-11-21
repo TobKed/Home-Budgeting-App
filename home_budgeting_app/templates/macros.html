@@ -1,0 +1,27 @@
+{% macro get_subcategory_list_items(items) %}
+{% for item in items %}
+    <li>{{ item.label }}</li>
+    {% if item.children %}
+        {{ get_subcategories_list(item.children.all()) }}
+    {% endif %}
+{% endfor %}
+{% endmacro %}
+
+{% macro get_subcategories_list(subcategories) %}
+<ul>
+{{ get_subcategory_list_items(subcategories) }}
+</ul>
+{% endmacro %}
+
+{% macro get_categories_list(categories) %}
+<ul>
+{% for category in categories %}
+    {% if not category.parent_id %}
+        <li>{{ category.label }}</li>
+        {% if category.children %}
+            {{ get_subcategories_list(category.children.all()) }}
+        {% endif %}
+    {% endif %}
+{% endfor %}
+</ul>
+{% endmacro %}
