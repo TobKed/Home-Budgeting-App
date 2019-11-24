@@ -22,4 +22,4 @@ mypy==0.740
 pep8-naming==0.8.2
 
 # Other
-openpyxl=3.0.1
+openpyxl==3.0.1

@@ -15,7 +15,7 @@ from home_budgeting_app.user.models import User
 
 logging.basicConfig(level=logging.INFO)
 
-USER_ID: int = 1
+USER_ID: int = 2
 MAIN_CATEGORIES: List[str] = [
     "Bills",
     "Food",
@@ -202,6 +202,8 @@ if __name__ == "__main__":
     file = get_filename_from_args()
 
     user = User.get_by_id(USER_ID)
+    if not user:
+        raise Exception(f"User with id '{USER_ID}' not found!")
     logging.info("Fetched user: %s", user)
     nr_of_user_expenditures_start = user.expenditures.count()
 
