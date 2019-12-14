@@ -59,7 +59,7 @@ def main(file):
     logging.info("Fetched user: %s", user)
 
     expenditures_categories = get_expenditures()
-    save_expenditures_to_csv(expenditures_categories[:10], file)
+    save_expenditures_to_csv(expenditures_categories, file)
 
 
 if __name__ == "__main__":

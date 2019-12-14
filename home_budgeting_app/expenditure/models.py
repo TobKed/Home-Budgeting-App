@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """Expenditure models."""
 import datetime as dt
+from typing import List
 
+from cached_property import cached_property
 from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import column_property
@@ -44,6 +46,11 @@ class Category(SurrogatePK, Model, BaseNestedSets):
         .where(Expenditure.category == id)
         .correlate_except(Expenditure)
     )
+
+    @cached_property
+    def path(self) -> List[str]:
+        """Returns list of the categories starting from root"""
+        return [c.label for c in self.path_to_root().all()][::-1]
 
     def save(self, *args, **kwargs):
         """Save the record and prevent the same subcategory within category."""

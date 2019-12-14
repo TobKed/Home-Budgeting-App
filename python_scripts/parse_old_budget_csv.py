@@ -99,7 +99,7 @@ def save_expenditures_to_csv(
 
 
 @log_execution_time
-def main(file=file):
+def main(file):
     worksheets = get_worksheets(file)
     expenditures = fetch_expendeitures(worksheets)
     save_expenditures_to_csv(expenditures, "expenditures.csv")

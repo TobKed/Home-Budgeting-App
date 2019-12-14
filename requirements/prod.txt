@@ -35,6 +35,7 @@ pyopenssl==19.0.0
 
 # Caching
 Flask-Caching>=1.7.2
+cached-property
 
 # Debug toolbar
 Flask-DebugToolbar==0.10.1
