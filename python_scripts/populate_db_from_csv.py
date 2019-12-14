@@ -196,10 +196,9 @@ def save_db_expenditures_to_db(expenditures: List[Expenditure]) -> None:  # noqa
     logging.info("Expenditures saved: %d", len(e_to_be_saved))
 
 
-if __name__ == "__main__":
+@log_execution_time
+def main(file):
     app.app_context().push()
-
-    file = get_filename_from_args()
 
     user = User.get_by_id(USER_ID)
     if not user:
@@ -220,3 +219,8 @@ if __name__ == "__main__":
         "User expenditures at the beelining: %d", nr_of_user_expenditures_start
     )
     logging.info("User expenditures at the end: %d", nr_of_user_expenditures_end)
+
+
+if __name__ == "__main__":
+    file = get_filename_from_args()
+    main(file=file)

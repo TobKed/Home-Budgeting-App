@@ -8,6 +8,7 @@ from openpyxl import load_workbook
 from openpyxl.cell import Cell
 from openpyxl.comments import Comment
 from openpyxl.worksheet.worksheet import Worksheet
+from python_scripts.execution_time import log_execution_time
 from python_scripts.expenditure import Expenditure
 
 logging.basicConfig(level=logging.INFO)
@@ -90,15 +91,20 @@ def fetch_expendeitures(worksheets: List[Worksheet]) -> List[Expenditure]:  # no
 def save_expenditures_to_csv(
     expenditures: List[Expenditure], file
 ) -> None:  # noqa: D103
-    with open(file, mode="w") as tobias_expenditures:
-        writer = csv.writer(tobias_expenditures, delimiter=",")
+    with open(file, mode="w") as f:
+        writer = csv.writer(f, delimiter=",")
         for e in expenditures:
             writer.writerow([e.date, e.value, e.category, e.comment])
     logging.info('Saved file: "%s"', file)
 
 
-if __name__ == "__main__":
-    file = get_filename_from_args()
+@log_execution_time
+def main(file=file):
     worksheets = get_worksheets(file)
     expenditures = fetch_expendeitures(worksheets)
     save_expenditures_to_csv(expenditures, "expenditures.csv")
+
+
+if __name__ == "__main__":
+    file = get_filename_from_args()
+    main(file)
