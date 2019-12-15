@@ -22,7 +22,7 @@ class Expenditure(SurrogatePK, Model):
     value = Column(db.Float(), nullable=False)
     spent_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
     comment = Column(db.Text(), nullable=True)
-    category = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
     created_at = Column(db.DateTime, nullable=False, default=dt.datetime.utcnow)
 
     def __repr__(self):  # noqa: D105
@@ -40,10 +40,10 @@ class Category(SurrogatePK, Model, BaseNestedSets):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     label = Column(db.String(128))
-    expenditures = db.relationship("Expenditure", backref="expenditures", lazy=True)
+    expenditures = db.relationship("Expenditure", backref="category", lazy=True)
     expenditures_count = column_property(
         select([func.count(Expenditure.id)])
-        .where(Expenditure.category == id)
+        .where(Expenditure.category_id == id)
         .correlate_except(Expenditure)
     )
 

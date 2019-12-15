@@ -40,12 +40,12 @@ repos:
         files: \.py$
         pass_filenames: true
         require_serial: true
-      - id: flask-lint
-        name: flask-lint
-        entry: flask lint --check
-        language: python
-        pass_filenames: false
-        always_run: true
+#      - id: flask-lint
+#        name: flask-lint
+#        entry: flask lint --check
+#        language: python
+#        pass_filenames: false
+#        always_run: true
       - id: unit-tests
         name: Runs all unit tests
         entry: ./shell_scripts/run_unit_tests.sh

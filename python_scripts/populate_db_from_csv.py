@@ -15,7 +15,7 @@ from home_budgeting_app.user.models import User
 
 logging.basicConfig(level=logging.INFO)
 
-USER_ID: int = 2
+USER_ID: int = 1
 MAIN_CATEGORIES: List[str] = [
     "Bills",
     "Food",
@@ -157,7 +157,7 @@ def _translate_basic_to_db_expenditure(
         user_id=USER_ID,
         value=basic_expenditure.value,
         comment=basic_expenditure.comment,
-        category=category.id,
+        category_id=category.id,
         spent_at=basic_expenditure.date,
     )
 

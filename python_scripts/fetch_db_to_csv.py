@@ -12,7 +12,7 @@ from home_budgeting_app.user.models import User
 
 logging.basicConfig(level=logging.INFO)
 
-USER_ID: int = 2
+USER_ID: int = 1
 
 
 def get_filename_from_args() -> str:  # noqa: D103
@@ -24,11 +24,10 @@ def get_filename_from_args() -> str:  # noqa: D103
     return args.filename
 
 
-def get_expenditures() -> List[Tuple[Expenditure, Category]]:
+def get_expenditures() -> List[Expenditure]:
     return (
-        db.session.query(Expenditure, Category)
+        db.session.query(Expenditure)
         .filter(Expenditure.user_id == USER_ID)
-        .join(Category)
         .order_by(Expenditure.spent_at)
     ).all()
 
@@ -38,14 +37,15 @@ def get_categories_path(category: Category) -> str:
 
 
 def save_expenditures_to_csv(
-    expenditures_categories: List[Tuple[Expenditure, Category]], file
+    expenditures: List[Expenditure], file
 ) -> None:  # noqa: D103
     with open(file, mode="w") as f:
         writer = csv.writer(f, delimiter=",")
-        total = len(expenditures_categories)
-        for i, (e, c) in enumerate(expenditures_categories):
-            writer.writerow([e.spent_at, e.value, get_categories_path(c), e.comment])
-            print(f"{i:>10}/{total}")
+        total = len(expenditures)
+        for i, e in enumerate(expenditures):
+            category_path = get_categories_path(e.category)
+            writer.writerow([e.spent_at, e.value, category_path, e.comment])
+            print(f"{i:>10}/{total} - {e.value:>6}-{e.spent_at} (path:{category_path}")
     logging.info('Saved file: "%s"', file)
 
 
@@ -58,8 +58,8 @@ def main(file):
         raise Exception(f"User with id '{USER_ID}' not found!")
     logging.info("Fetched user: %s", user)
 
-    expenditures_categories = get_expenditures()
-    save_expenditures_to_csv(expenditures_categories, file)
+    expenditures = get_expenditures()
+    save_expenditures_to_csv(expenditures, file)
 
 
 if __name__ == "__main__":
