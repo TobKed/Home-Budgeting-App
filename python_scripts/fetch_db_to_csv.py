@@ -1,7 +1,7 @@
 import argparse
 import csv
 import logging
-from typing import List, Tuple
+from typing import List
 
 from autoapp import app
 from python_scripts.execution_time import log_execution_time
