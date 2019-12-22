@@ -1,6 +1,6 @@
 {% macro get_subcategory_list_items(items) %}
     {% for item in items %}
-        <li>{{ item.node.label }} <span class="badge badge-primary badge-pill" data-toggle="tooltip"
+        <li>{{ item.node.label }} <span class="badge badge-primary badge-pill ml-3" data-toggle="tooltip"
                                         data-placement="top"
                                         title="All expenditures in the category">{{ item.node.expenditures_cumulative_count }}</span>
             <span class="badge badge-secondary badge-pill" data-toggle="tooltip" data-placement="top"
@@ -21,7 +21,7 @@
 {% macro get_categories_list(categories) %}
     <ul>
         {% for category in categories %}
-            <li>{{ category.node.label }} <span class="badge badge-primary badge-pill"
+            <li>{{ category.node.label }} <span class="badge badge-primary badge-pill ml-3"
                                                    data-toggle="tooltip" data-placement="top"
                                                    title="All expenditures in the category">{{ category.node.expenditures_cumulative_count }}</span>
                 <span class="badge badge-secondary badge-pill" data-toggle="tooltip" data-placement="top"

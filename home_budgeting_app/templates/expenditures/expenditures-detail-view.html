@@ -5,20 +5,20 @@
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
-                <tr class="text-nowrap">
-                    <th scope="col">Value</th>
-                    <th scope="col">Spent at</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Comment</th>
-                </tr>
+                    <tr class="text-nowrap">
+                        <th scope="col">Value</th>
+                        <th scope="col">Spent at</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Comment</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td class="text-nowrap">{{ expenditure.value }}</td>
-                    <td class="text-nowrap">{{ expenditure.spent_at.strftime('%Y-%m-%d') }}</td>
-                    <td class="text-nowrap">{{ expenditure.category.path|join(' - ') }}</td>
-                    <td>{% if expenditure.comment %}{{ expenditure.comment }}{% endif %}</td>
-                </tr>
+                    <tr>
+                        <td class="text-nowrap">{{ expenditure.value }}</td>
+                        <td class="text-nowrap">{{ expenditure.spent_at.strftime('%Y-%m-%d') }}</td>
+                        <td class="text-nowrap">{{ expenditure.category.path|join(' - ') }}</td>
+                        <td>{% if expenditure.comment %}{{ expenditure.comment }}{% endif %}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>

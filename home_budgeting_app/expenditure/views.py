@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
 """Expenditure views."""
-from flask import Blueprint, abort, render_template, request
+from datetime import datetime
+
+from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 
+from .forms import ExpenditureForm
 from .models import Category, Expenditure
 from .service import add_expenditures_cumulative_count
 
@@ -55,4 +58,35 @@ def expenditure_detail_view(exp_id):
         "expenditures/expenditures-detail-view.html",
         expenditure=expenditure,
         referrer=referrer,
+    )
+
+
+@blueprint.route("/add", methods=["GET", "POST"])
+def expenditure_add_view():
+    view_name = "Add"
+    form = ExpenditureForm()
+    categories = (
+        Category.query.filter(Category.user_id == current_user.id)
+        .order_by(Category.expenditures_count.desc())
+        .all()
+    )
+    choices = [(cat.id, "-".join(cat.path)) for cat in categories]
+    form.category.choices = choices
+
+    if form.validate_on_submit():
+        expenditure = Expenditure.create(
+            user_id=current_user.id,
+            value=form.value.data,
+            spent_at=form.spent_at.data,
+            comment=form.comment.data,
+            category_id=form.category.data,
+            created_at=datetime.today(),
+        )
+        flash("Your post has been saved!", "success")
+        return redirect(
+            url_for("expenditure.expenditure_detail_view", exp_id=expenditure.id)
+        )
+
+    return render_template(
+        "expenditures/expenditures-detail-edit.html", form=form, view_name=view_name
     )
