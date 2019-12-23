@@ -81,9 +81,12 @@ def fetch_expendeitures(worksheets: List[Worksheet]) -> List[Expenditure]:  # no
                     continue
 
                 cell = worksheet.cell(row=row_nr, column=column_nr)
-                if cell.value:
-                    parsed_cell = parse_cell(cell, row_nr, column_nr, worksheet)
-                    expenditures.append(parsed_cell)
+                if isinstance(cell.value, str) and not cell.value.strip():
+                    continue
+                if not cell.value:
+                    continue
+                parsed_cell = parse_cell(cell, row_nr, column_nr, worksheet)
+                expenditures.append(parsed_cell)
     logging.info("Fetched %d expenditures", len(expenditures))
     return sorted(expenditures, key=lambda x: x.date)
 
