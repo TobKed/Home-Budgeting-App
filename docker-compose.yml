@@ -17,6 +17,8 @@ services:
       args:
         <<: *build_args
     image: "home_budgeting_app-development"
+    env_file:
+      - .env
     depends_on:
       - postgres
     ports:
