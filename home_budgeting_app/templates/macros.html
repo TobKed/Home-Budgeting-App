@@ -1,0 +1,35 @@
+{% macro get_subcategory_list_items(items) %}
+    {% for item in items %}
+        <li>{{ item.node.label }} <span class="badge badge-primary badge-pill ml-3" data-toggle="tooltip"
+                                        data-placement="top"
+                                        title="All expenditures in the category">{{ item.node.expenditures_cumulative_count }}</span>
+            <span class="badge badge-secondary badge-pill" data-toggle="tooltip" data-placement="top"
+                  title="Direct expenditures in the category">{{ item.node.expenditures_count }}</span>
+        </li>
+        {% if item.children %}
+            {{ get_subcategories_list(item.children) }}
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{% macro get_subcategories_list(subcategories) %}
+    <ul>
+        {{ get_subcategory_list_items(subcategories) }}
+    </ul>
+{% endmacro %}
+
+{% macro get_categories_list(categories) %}
+    <ul>
+        {% for category in categories %}
+            <li>{{ category.node.label }} <span class="badge badge-primary badge-pill ml-3"
+                                                   data-toggle="tooltip" data-placement="top"
+                                                   title="All expenditures in the category">{{ category.node.expenditures_cumulative_count }}</span>
+                <span class="badge badge-secondary badge-pill" data-toggle="tooltip" data-placement="top"
+                      title="Direct expenditures in the category">{{ category.node.expenditures_count }}</span>
+            </li>
+            {% if category.children %}
+                {{ get_subcategories_list(category.children) }}
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endmacro %}

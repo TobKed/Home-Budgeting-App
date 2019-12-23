@@ -19,7 +19,7 @@ repos:
       - id: check-yaml
       - id: check-executables-have-shebangs
       - id: check-merge-conflict
-      - id: debug-statements
+#      - id: debug-statements
       - id: end-of-file-fixer
       - id: mixed-line-ending
 #      - id: requirements-txt-fixer
@@ -33,12 +33,19 @@ repos:
       - id: mypy
   - repo: local
     hooks:
-      - id: flask-lint
-        name: flask-lint
-        entry: flask lint --check
+      - id: mypy
+        name: Checks typing annotations consistency with mypy
         language: python
-        pass_filenames: false
-        always_run: true
+        entry: mypy
+        files: \.py$
+        pass_filenames: true
+        require_serial: true
+#      - id: flask-lint
+#        name: flask-lint
+#        entry: flask lint --check
+#        language: python
+#        pass_filenames: false
+#        always_run: true
       - id: unit-tests
         name: Runs all unit tests
         entry: ./shell_scripts/run_unit_tests.sh

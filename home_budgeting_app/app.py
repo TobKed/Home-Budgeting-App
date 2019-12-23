@@ -7,7 +7,7 @@ import sentry_sdk
 from flask import Flask, render_template
 from sentry_sdk.integrations.flask import FlaskIntegration
 
-from home_budgeting_app import commands, public, settings, user
+from home_budgeting_app import commands, expenditure, public, settings, user
 from home_budgeting_app.extensions import (
     bcrypt,
     cache,
@@ -54,6 +54,7 @@ def register_blueprints(app):
     """Register Flask blueprints."""
     app.register_blueprint(public.views.blueprint)
     app.register_blueprint(user.views.blueprint)
+    app.register_blueprint(expenditure.views.blueprint)
     return None
 
 

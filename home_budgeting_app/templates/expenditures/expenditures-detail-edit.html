@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container">
+        <h1>{{ view_name }} Expenditure:</h1>
+        <form method="POST" action="" id="expenditureForm">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">{{ legend }}</legend>
+                <div class="form-group">
+                    {{ form.value.label(class="form-control-label") }}
+                    {% if form.value.errors %}
+                        {{ form.value(class="form-control form-control-lg is-invalid", type="number", step="0.01") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.value.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.value(class="form-control form-control-lg", type="number", step="0.01") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.spent_at.label(class="form-control-label") }}
+                    {% if form.spent_at.errors %}
+                        {{ form.spent_at(class="form-control form-control-lg is-invalid", type="datetime-local") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.spent_at.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.spent_at(class="form-control form-control-lg", type="datetime-local") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.comment.label(class="form-control-label") }}
+                    {% if form.comment.errors %}
+                        {{ form.comment(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.comment.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.comment(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.category.label(class="form-control-label") }}
+                    {% if form.category.errors %}
+                        {{ form.category(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.category.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.category(class="form-control form-control-lg") }}
+                    {% endif %}
+                </div>
+            </fieldset>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-outline-info", value=view_name) }}
+            </div>
+        </form>
+        {% if referrer is not none %}
+            <span><a href="{{ referrer }}">Back to previous page.</a></span><br>
+        {% endif %}
+            <span><a href="{{ url_for('expenditure.expenditures') }}">Back to expenditures.</a> </span>
+    </div>
+{% endblock %}

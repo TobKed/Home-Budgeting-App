@@ -13,3 +13,8 @@ require('bootstrap');
 // Your own code
 require('./plugins.js');
 require('./script.js');
+
+require('@fortawesome/fontawesome-free/js/fontawesome');
+require('@fortawesome/fontawesome-free/js/solid');
+require('@fortawesome/fontawesome-free/js/regular');
+require('@fortawesome/fontawesome-free/js/brands');
