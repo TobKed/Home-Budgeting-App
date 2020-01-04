@@ -32,7 +32,7 @@ class TestAddingExpenditure:
         CategoryFactory(user_id=user.id)
         db.session.commit()
 
-        res = testapp.get(url_for("expenditure.expenditure_add_view"))
+        res = testapp.get(url_for("expenditure.expenditure_add"))
         form = res.forms["expenditureForm"]
         form["value"] = 123
         form["spent_at"] = "2019-12-22T20:20"
