@@ -2,11 +2,11 @@
 """Expenditure views."""
 from datetime import datetime
 
-from flask import Blueprint, abort, flash, redirect, render_template, request, url_for
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 
 from .forms import ExpenditureForm
-from .models import Category, Expenditure
+from .models import Category, Expenditure, get_by_id_for_current_user_or_abort
 from .service import add_expenditures_cumulative_count
 
 blueprint = Blueprint(
@@ -49,29 +49,21 @@ def expenditures():
 
 
 @blueprint.route("/<int:exp_id>")
-def expenditure_detail_view(exp_id):
-    expenditure = Expenditure.get_by_id(exp_id)
-    if not expenditure or expenditure.user_id != current_user.id:
-        abort(404)
-    referrer = request.referrer
+@login_required
+def expenditure_detail(exp_id):
+    expenditure = get_by_id_for_current_user_or_abort(Expenditure, exp_id)
     return render_template(
-        "expenditures/expenditures-detail-view.html",
+        "expenditures/expenditures_detail_view.html",
         expenditure=expenditure,
-        referrer=referrer,
+        exp_id=expenditure.id,
     )
 
 
 @blueprint.route("/add", methods=["GET", "POST"])
-def expenditure_add_view():
+@login_required
+def expenditure_add():
     view_name = "Add"
     form = ExpenditureForm()
-    categories = (
-        Category.query.filter(Category.user_id == current_user.id)
-        .order_by(Category.expenditures_count.desc())
-        .all()
-    )
-    choices = [(cat.id, "-".join(cat.path)) for cat in categories]
-    form.category.choices = choices
 
     if form.validate_on_submit():
         expenditure = Expenditure.create(
@@ -82,11 +74,56 @@ def expenditure_add_view():
             category_id=form.category.data,
             created_at=datetime.today(),
         )
-        flash("Your post has been saved!", "success")
+        flash("Your expenditure has been saved!", "success")
         return redirect(
-            url_for("expenditure.expenditure_detail_view", exp_id=expenditure.id)
+            url_for("expenditure.expenditure_detail", exp_id=expenditure.id)
         )
 
     return render_template(
-        "expenditures/expenditures-detail-edit.html", form=form, view_name=view_name
+        "expenditures/expenditures_detail_edit.html",
+        form=form,
+        view_name=view_name,
+        exp_id=None,
     )
+
+
+@blueprint.route("<int:exp_id>/edit", methods=["GET", "POST"])
+@login_required
+def expenditure_edit(exp_id):
+    expenditure = get_by_id_for_current_user_or_abort(Expenditure, exp_id)
+    view_name = "Update"
+    form = ExpenditureForm()
+
+    if form.validate_on_submit():
+        expenditure.update(
+            user_id=current_user.id,
+            value=form.value.data,
+            spent_at=form.spent_at.data,
+            comment=form.comment.data,
+            category_id=form.category.data,
+        )
+        flash("Your expenditure has been updated!", "success")
+        return redirect(
+            url_for("expenditure.expenditure_detail", exp_id=expenditure.id)
+        )
+    elif request.method == "GET":
+        form.value.data = expenditure.value
+        form.spent_at.data = expenditure.spent_at
+        form.comment.data = expenditure.comment
+        form.category.data = expenditure.category_id
+
+    return render_template(
+        "expenditures/expenditures_detail_edit.html",
+        form=form,
+        view_name=view_name,
+        exp_id=expenditure.id,
+    )
+
+
+@blueprint.route("<int:exp_id>/delete", methods=["POST"])
+@login_required
+def expenditure_delete(exp_id):
+    expenditure = get_by_id_for_current_user_or_abort(Expenditure, exp_id)
+    expenditure.delete()
+    flash("Your expenditure has been deleted!", "success")
+    return redirect(url_for("expenditure.expenditures"))

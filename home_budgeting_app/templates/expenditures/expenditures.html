@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="container">
-        <h1>Your expensditures:</h1>
+        <h1>Your expenditures:</h1>
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
@@ -24,7 +24,16 @@
                         <td class="text-nowrap">{{ exp.category.path|join(' - ') }}</td>
                         <td>{% if exp.comment %}{{ exp.comment }}{% endif %}</td>
                         <td>
-                            <a href="{{ url_for('expenditure.expenditure_detail_view', exp_id=exp.id)  }}" class="btn btn-info btn-xs" data-toggle="tooltip" title="Info"><span class="fas fa-info xs"></span></a>
+                            <a href="{{ url_for('expenditure.expenditure_detail', exp_id=exp.id) }}"
+                               class="btn btn-info btn-xs">
+                                <span class="fas fa-info xs" data-toggle="tooltip" title="Info"></span>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('expenditure.expenditure_edit', exp_id=exp.id) }}"
+                               class="btn btn-secondary btn-xs">
+                                <span class="fas fa-edit xs"  data-toggle="tooltip" title="Edit"></span>
+                            </a>
                         </td>
                     </tr>
                 {% endfor %}

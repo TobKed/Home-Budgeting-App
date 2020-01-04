@@ -22,10 +22,10 @@
                 </tbody>
             </table>
         </div>
-        {% if referrer is not none %}
-            <span><a href="{{ referrer }}">Back to previous page.</a> </span>
-        {% else %}
-            <span><a href="{{ url_for('expenditure.expenditures') }}">Back to expenditures.</a> </span>
-        {% endif %}
+        <div class="mb-2">
+            <a href="{{ url_for('expenditure.expenditure_edit', exp_id=exp_id) }}" class="btn btn-outline-info" role="button">Edit</a>
+        </div>
+        <span><a href="{{ url_for('expenditure.expenditures') }}">Back to expenditures.</a> </span>
     </div>
+
 {% endblock %}

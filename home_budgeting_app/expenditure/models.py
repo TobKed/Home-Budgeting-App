@@ -4,10 +4,12 @@ import datetime as dt
 from typing import List
 
 from cached_property import cached_property
+from flask_login import current_user
 from sqlalchemy import func, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import column_property
 from sqlalchemy_mptt.mixins import BaseNestedSets
+from werkzeug.exceptions import abort
 
 from home_budgeting_app.database import Column, Model, SurrogatePK
 from home_budgeting_app.extensions import db
@@ -65,3 +67,18 @@ class Category(SurrogatePK, Model, BaseNestedSets):
 
     def __repr__(self):  # noqa: D105
         return f"Category(label='{self.label}', user_id={self.user_id}, parent_id={self.parent_id})"
+
+
+def get_by_id_for_current_user_or_abort(klass, record_id):
+    expected_classes = (Expenditure, Category)
+    if not isinstance(klass, expected_classes):
+        RuntimeError(
+            f"Wrong class passed '{klass}'. Should be one of {expected_classes}"
+        )
+    obj = klass.get_by_id(record_id)
+    if not obj:
+        abort(404)
+    elif obj.user_id != current_user.id:
+        abort(403)
+    else:
+        return obj

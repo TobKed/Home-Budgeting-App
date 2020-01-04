@@ -61,11 +61,16 @@
             </fieldset>
             <div class="form-group">
                 {{ form.submit(class="btn btn-outline-info", value=view_name) }}
+                {% if exp_id is not none %}
+                    <a href="#" class="btn btn-outline-danger" role="button" data-toggle="modal" data-target="#deleteModal">Delete</a>
+                    <a href="{{ url_for('expenditure.expenditure_detail', exp_id=exp_id) }}" class="btn btn-outline-info" role="button">Cancel</a>
+                {% endif %}
             </div>
         </form>
-        {% if referrer is not none %}
-            <span><a href="{{ referrer }}">Back to previous page.</a></span><br>
-        {% endif %}
-            <span><a href="{{ url_for('expenditure.expenditures') }}">Back to expenditures.</a> </span>
+        <span><a href="{{ url_for('expenditure.expenditures') }}">Back to expenditures.</a> </span>
     </div>
+    {% if exp_id is not none %}
+        {% include "expenditures/expenditures_delete_modal.html" %}
+    {% endif %}
+
 {% endblock %}
